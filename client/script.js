@@ -92,14 +92,20 @@ function renderList() {
   });
 }
 
-function renderTask({ id, title, description, dueDate }) {
+function renderTask({ id, title, description, dueDate, completed }) {
   let html = `
-    <li class="select-none mt-2 py-2 border-b border-amber-300">
+    <li class="select-none mt-2 py-2 border-b border-red-300">
       <div class="flex items-center">
-        <h3 class="mb-3 flex-1 text-xl font-bold text-pink-800 uppercase">${title}</h3>
+        <h3 class="mb-3 flex-1 text-xl font-bold text-emerald-900 uppercase">
+          ${completed ? '<span class="text-green-700 mr-4">&check;</span>' + title : title}
+        </h3>
         <div>
           <span>${dueDate}</span>
-          <button onclick="deleteTask(${id})" class="inline-block bg-amber-500 text-xs text-amber-900 border border-white px-3 py-1 rounded-md ml-2">Ta bort</button>
+          <div class="inline-block bg-emerald-600 text-xs border border-emerald p-0 rounded-md ml-2">
+            <input ${completed ? 'checked="true"' : ''} onchange="toggleCompleted(${id}, event.target.checked)" class="ml-2 checked:bg-green-900" type="checkbox" id="check${id}" name="check${id}">
+            <label class="inline-block -ml-6 pl-6 pr-3 py-1" for="check${id}">Markera som klar</label>
+          </div>
+          <button onclick="deleteTask(${id})" class="inline-block bg-red-300 text-xs text-black border border-white px-3 py-1 rounded-md ml-2">Ta bort</button>
         </div>
       </div>`;
   description &&
