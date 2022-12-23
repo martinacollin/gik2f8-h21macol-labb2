@@ -35,8 +35,20 @@ app.get('/tasks', async (req, res) => {
   try {
     /* Node har en inbyggd modul som heter fs (importerades i början av denna fil). Den används här för att försöka läsa innehållet i en fil vid namn tasks.json. Anropet är asynkront så man sätter await innan (och async innan callbackfunktionen i app.get().) */
     const tasks = await fs.readFile('./tasks.json');
+    let currentTasks = JSON.parse(tasks);
+    if (currentTasks && currentTasks.length > 1) {
+      currentTasks = currentTasks.sort((a, b) => {
+        if (a.dueDate < b.dueDate) {
+          return -1;
+        } else if (a.dueDate > b.dueDate) {
+          return 1;
+        } else {
+          return 0;
+        }
+      })
+    }
     /* Innehållet skickas tillbaka till klienten i ett standardresponse. Eftersom allt gick bra kan vi använda defaultinställningarna med statuskod 200 och statustext "ok". Vi kan kalla detta för ett success-response. Efter res.send är förfrågan färdigbehandlad och kopplingen mot servern kommer att stängas ned. */
-    res.send(JSON.parse(tasks));
+    res.send(currentTasks);
   } catch (error) {
     /* Om någonting i ovanstående kod orsakade en krasch, fångas den här och man skickar istället ett response som har koden 500 (server error) och inkluderar felet, */
     res.status(500).send({ error });
