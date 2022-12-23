@@ -85,4 +85,18 @@ class Api {
       .then((result) => result)
       .catch((err) => console.log(err));
   }
+
+  /* Patch = PATCH */
+  saveCompleted(id, { completed }) {
+    const request = new Request(`${this.url}/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({ completed }),
+      headers: {
+        'content-type': 'application/json'
+      }
+    });
+    return fetch(request)
+      .then((result) => result)
+      .catch((err) => console.log(err));
+  }
 }

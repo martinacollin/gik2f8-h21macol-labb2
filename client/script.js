@@ -124,4 +124,11 @@ function deleteTask(id) {
   });
 }
 
+function toggleCompleted(id, completed) {
+  console.log(completed);
+  api.saveCompleted(id, { completed }).then((result) => {
+    renderList();
+  });
+}
+
 renderList();
